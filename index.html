@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steelers Players</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="iphone-frame">
+        <div class="status-bar">
+            <div class="status-left">
+                <span class="time">9:41</span>
+            </div>
+            <div class="status-right">
+                <div class="battery-icon">
+                    <div class="battery-level"></div>
+                </div>
+                <span class="signal">●●●</span>
+            </div>
+        </div>
+        
+        <div class="browser-chrome">
+            <div class="address-bar">
+                <div class="url-container">
+                    <span class="lock-icon">🔒</span>
+                    <span class="url">steelers-players.com</span>
+                </div>
+                <div class="menu-container">
+                    <button class="menu-button" id="menuButton">⋯</button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <button class="menu-item" id="fetchDataBtn">Fetch data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="browser-content">
+            <div class="content-header">
+                <h1>Pittsburgh Steelers</h1>
+                <p>Player Management System</p>
+            </div>
+            
+            <div class="status-message" id="statusMessage"></div>
+            
+            <div class="content-body">
+                <div class="info-card">
+                    <h2>Current Roster Data</h2>
+                    <p>Use the menu (⋯) in the browser bar to fetch the latest player data from the Sleeper API.</p>
+                    <div class="data-info">
+                        <span class="data-label">Last Updated:</span>
+                        <span class="data-value" id="lastUpdated">Never</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
