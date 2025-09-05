@@ -30,6 +30,7 @@
                     <button class="menu-button" id="menuButton">⋯</button>
                     <div class="dropdown-menu" id="dropdownMenu">
                         <button class="menu-item" id="fetchDataBtn">Fetch data</button>
+                        <button class="menu-item" id="currentRosterBtn">Current roster</button>
                     </div>
                 </div>
             </div>
@@ -43,7 +44,7 @@
             
             <div class="status-message" id="statusMessage"></div>
             
-            <div class="content-body">
+            <div class="content-body" id="mainView">
                 <div class="info-card">
                     <h2>Current Roster Data</h2>
                     <p>Use the menu (⋯) in the browser bar to fetch the latest player data from the Sleeper API.</p>
@@ -51,6 +52,17 @@
                         <span class="data-label">Last Updated:</span>
                         <span class="data-value" id="lastUpdated">Never</span>
                     </div>
+                </div>
+            </div>
+            
+            <div class="content-body roster-view" id="rosterView" style="display: none;">
+                <div class="roster-header">
+                    <button class="back-button" id="backButton">← Back</button>
+                    <h2>Current Roster</h2>
+                    <p id="rosterCount">Loading...</p>
+                </div>
+                <div class="roster-list" id="rosterList">
+                    <!-- Roster items will be populated here -->
                 </div>
             </div>
         </div>
