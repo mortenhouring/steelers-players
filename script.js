@@ -2,8 +2,14 @@
 const menuButton = document.getElementById('menuButton');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const fetchDataBtn = document.getElementById('fetchDataBtn');
+const currentRosterBtn = document.getElementById('currentRosterBtn');
 const statusMessage = document.getElementById('statusMessage');
 const lastUpdated = document.getElementById('lastUpdated');
+const mainView = document.getElementById('mainView');
+const rosterView = document.getElementById('rosterView');
+const backButton = document.getElementById('backButton');
+const rosterList = document.getElementById('rosterList');
+const rosterCount = document.getElementById('rosterCount');
 
 // Toggle dropdown menu
 menuButton.addEventListener('click', (e) => {
@@ -23,6 +29,71 @@ fetchDataBtn.addEventListener('click', async () => {
     dropdownMenu.classList.remove('show');
     await fetchSleeperData();
 });
+
+// Current roster functionality
+currentRosterBtn.addEventListener('click', async () => {
+    dropdownMenu.classList.remove('show');
+    await showCurrentRoster();
+});
+
+// Back button functionality
+backButton.addEventListener('click', () => {
+    showMainView();
+});
+
+// View switching functions
+function showMainView() {
+    mainView.style.display = 'block';
+    rosterView.style.display = 'none';
+}
+
+function showRosterView() {
+    mainView.style.display = 'none';
+    rosterView.style.display = 'block';
+}
+
+// Load and display current roster
+async function showCurrentRoster() {
+    try {
+        showStatus('Loading current roster...', 'loading');
+        showRosterView();
+        
+        // Fetch trivia_currentroster.json
+        const response = await fetch('./trivia_currentroster.json');
+        
+        if (!response.ok) {
+            throw new Error(`Failed to load roster data: ${response.status}`);
+        }
+        
+        const rosterData = await response.json();
+        
+        // Update roster count
+        rosterCount.textContent = `${rosterData.length} players`;
+        
+        // Clear existing roster items
+        rosterList.innerHTML = '';
+        
+        // Create roster items
+        rosterData.forEach(player => {
+            const rosterItem = document.createElement('div');
+            rosterItem.className = 'roster-item';
+            
+            rosterItem.innerHTML = `
+                <div class="player-name">${player.player_name}</div>
+                <p class="player-trivia">${player.trivia}</p>
+            `;
+            
+            rosterList.appendChild(rosterItem);
+        });
+        
+        showStatus(`Successfully loaded ${rosterData.length} players!`, 'success');
+        
+    } catch (error) {
+        console.error('Error loading roster data:', error);
+        showStatus(`Error loading roster: ${error.message}`, 'error');
+        showMainView(); // Go back to main view on error
+    }
+}
 
 // Show status message
 function showStatus(message, type = 'info') {

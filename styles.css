@@ -281,3 +281,84 @@ body {
     animation: spin 1s linear infinite;
     margin-right: 8px;
 }
+
+/* Roster View Styles */
+.roster-view {
+    padding: 0;
+}
+
+.roster-header {
+    background: linear-gradient(135deg, #FFB000 0%, #FF8C00 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+}
+
+.back-button {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.roster-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+}
+
+.roster-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.roster-list {
+    padding: 20px;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+.roster-item {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.roster-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.roster-item:last-child {
+    margin-bottom: 0;
+}
+
+.player-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.player-trivia {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666;
+    margin: 0;
+}
