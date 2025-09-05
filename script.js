@@ -14,40 +14,57 @@ const rosterCount = document.getElementById('rosterCount');
 // Toggle dropdown menu
 menuButton.addEventListener('click', (e) => {
     e.stopPropagation();
+    const isVisible = dropdownMenu.classList.contains('show');
+    console.log(`[DEBUG] Menu button clicked. Current state: ${isVisible ? 'visible' : 'hidden'}`);
+    
     dropdownMenu.classList.toggle('show');
+    
+    const newState = dropdownMenu.classList.contains('show');
+    console.log(`[DEBUG] Menu dropdown state changed to: ${newState ? 'visible' : 'hidden'}`);
 });
 
 // Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
     if (!dropdownMenu.contains(e.target) && !menuButton.contains(e.target)) {
-        dropdownMenu.classList.remove('show');
+        const wasVisible = dropdownMenu.classList.contains('show');
+        if (wasVisible) {
+            console.log('[DEBUG] Closing dropdown menu (clicked outside)');
+            dropdownMenu.classList.remove('show');
+        }
     }
 });
 
 // Fetch data functionality
 fetchDataBtn.addEventListener('click', async () => {
+    console.log('[DEBUG] Fetch data button clicked');
     dropdownMenu.classList.remove('show');
+    console.log('[DEBUG] Menu dropdown closed');
     await fetchSleeperData();
 });
 
 // Current roster functionality
 currentRosterBtn.addEventListener('click', async () => {
+    console.log('[DEBUG] Current roster button clicked');
     dropdownMenu.classList.remove('show');
+    console.log('[DEBUG] Menu dropdown closed');
     await showCurrentRoster();
 });
 
 // Back button functionality
 backButton.addEventListener('click', () => {
+    console.log('[DEBUG] Back button clicked, returning to main view');
     showMainView();
 });
 
 // View switching functions
 function showMainView() {
+    console.log('[DEBUG] Switching to main view');
     mainView.style.display = 'block';
     rosterView.style.display = 'none';
 }
 
 function showRosterView() {
+    console.log('[DEBUG] Switching to roster view');
     mainView.style.display = 'none';
     rosterView.style.display = 'block';
 }
@@ -55,26 +72,35 @@ function showRosterView() {
 // Load and display current roster
 async function showCurrentRoster() {
     try {
+        console.log('[DEBUG] Starting to load current roster from trivia_currentroster.json');
         showStatus('Loading current roster...', 'loading');
         showRosterView();
         
-        // Fetch trivia_currentroster.json
-        const response = await fetch('./trivia_currentroster.json');
+        // Fetch trivia_currentroster.json with improved path handling
+        const fetchPath = 'trivia_currentroster.json';
+        console.log(`[DEBUG] Attempting to fetch roster data from: ${fetchPath}`);
+        
+        const response = await fetch(fetchPath);
         
         if (!response.ok) {
-            throw new Error(`Failed to load roster data: ${response.status}`);
+            console.error(`[DEBUG] Failed to fetch roster data. Status: ${response.status}, StatusText: ${response.statusText}`);
+            throw new Error(`Failed to load roster data: ${response.status} ${response.statusText}`);
         }
         
+        console.log('[DEBUG] Successfully received response from trivia_currentroster.json');
         const rosterData = await response.json();
+        console.log(`[DEBUG] Parsed roster data. Found ${rosterData.length} players`);
         
         // Update roster count
         rosterCount.textContent = `${rosterData.length} players`;
         
         // Clear existing roster items
         rosterList.innerHTML = '';
+        console.log('[DEBUG] Cleared existing roster items');
         
         // Create roster items
-        rosterData.forEach(player => {
+        rosterData.forEach((player, index) => {
+            console.log(`[DEBUG] Creating roster item ${index + 1}/${rosterData.length}: ${player.player_name}`);
             const rosterItem = document.createElement('div');
             rosterItem.className = 'roster-item';
             
@@ -86,10 +112,16 @@ async function showCurrentRoster() {
             rosterList.appendChild(rosterItem);
         });
         
+        console.log(`[DEBUG] Successfully created ${rosterData.length} roster items`);
         showStatus(`Successfully loaded ${rosterData.length} players!`, 'success');
         
     } catch (error) {
-        console.error('Error loading roster data:', error);
+        console.error('[DEBUG] Error loading roster data:', error);
+        console.error('[DEBUG] Error details:', {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
         showStatus(`Error loading roster: ${error.message}`, 'error');
         showMainView(); // Go back to main view on error
     }
@@ -97,6 +129,7 @@ async function showCurrentRoster() {
 
 // Show status message
 function showStatus(message, type = 'info') {
+    console.log(`[DEBUG] Showing status message: "${message}" (type: ${type})`);
     statusMessage.textContent = message;
     statusMessage.className = `status-message ${type}`;
     
@@ -107,6 +140,7 @@ function showStatus(message, type = 'info') {
     // Auto-hide success/error messages after 5 seconds
     if (type === 'success' || type === 'error') {
         setTimeout(() => {
+            console.log(`[DEBUG] Auto-hiding status message after 5 seconds`);
             statusMessage.textContent = '';
             statusMessage.className = 'status-message';
         }, 5000);
@@ -295,13 +329,23 @@ async function saveRosterData(data) {
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Steelers Players app initialized');
+    console.log('[DEBUG] DOM loaded, initializing Steelers Players app');
+    console.log('[DEBUG] Checking for DOM elements:');
+    console.log(`[DEBUG] - menuButton: ${menuButton ? 'found' : 'not found'}`);
+    console.log(`[DEBUG] - dropdownMenu: ${dropdownMenu ? 'found' : 'not found'}`);
+    console.log(`[DEBUG] - fetchDataBtn: ${fetchDataBtn ? 'found' : 'not found'}`);
+    console.log(`[DEBUG] - currentRosterBtn: ${currentRosterBtn ? 'found' : 'not found'}`);
     
     // Check if we have existing roster data
     const lastUpdate = localStorage.getItem('lastRosterUpdate');
     if (lastUpdate) {
+        console.log(`[DEBUG] Found existing roster update timestamp: ${lastUpdate}`);
         lastUpdated.textContent = new Date(lastUpdate).toLocaleString();
+    } else {
+        console.log('[DEBUG] No existing roster update timestamp found');
     }
+    
+    console.log('[DEBUG] Steelers Players app initialization complete');
 });
 
 // Save last update time to localStorage when data is fetched
