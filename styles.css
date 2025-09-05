@@ -149,12 +149,14 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: all 0.2s ease;
+    pointer-events: none; /* Prevent interaction when hidden */
 }
 
 .dropdown-menu.show {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto; /* Allow interaction when visible */
 }
 
 .menu-item {
